@@ -140,12 +140,12 @@ contract Auction is Ownable{
         emit Refunded(_auctionIndex, msg.sender, auction.userList[userIndex].bidAmount);
     }
 
-    function getLockedAmount() public view returns (uint256){
+    function getLockedAmount() public view onlyOwner returns (uint256){
         IRand memory randPool = IRand(randAddress);
         return randPool.balanceOf(lockAddress);
     }
 
-    function cutLockedToken() public {
+    function cutLockedToken() public onlyOwner{
         IRand memory randPool = IRand(randAddress);
         uint256 cutAmount = randPool.balanceOf(lockAddress).div(10);
         randPool.transferFrom(lockAddress, walletAddress, cutAmount);
